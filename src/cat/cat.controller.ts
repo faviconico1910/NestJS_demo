@@ -1,9 +1,11 @@
-import { Controller, Get, Req, Post, Query, Param, Body, Header, Redirect, HttpException, HttpStatus, UseFilters, All} from '@nestjs/common';
+import { Controller, Get, Req, Post, Query, Param, Body, Header, Redirect, HttpException, HttpStatus, UseFilters, All, UseGuards} from '@nestjs/common';
 import { CatsService } from '../cats/cats.service';
 import {Cat} from '../interfaces/cat.interfaces';
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { AllExceptionsFilter } from '../common/filters/all-exceptions.filter';
+import { ApiKeyGuard} from 'src/common/guards/api-key.guard';
+import { Public } from 'src/common/decorators/public/public.decorator';
 
 // test base exception filter
 // @UseFilters(AllExceptionsFilter)
@@ -30,6 +32,7 @@ export class CatController {
 
     // search theo param
     @Get(':id')
+    @Public()
     findOne(@Param('id') id : string): string {
         // exception
         if (id > '100') {
@@ -42,12 +45,20 @@ export class CatController {
     }
 
     // Post request, @Header decorator
+    // áp dụng guard ở đây
     @Post()
+    // @UseGuards(ApiKeyGuard)
     // @Header('Cache-Control', 'no-cache')
     // @Header('X-Custom-Message', 'Xin-chao-NestJS')
-    create(@Body() catData: CreateCatDto): string {
-        this.catsService.create(catData);
-        return "Đã tạo con mèo có tên là " + catData.name;
+    @Public()
+    async create(@Body() catData: CreateCatDto): Promise<any> {
+        const newCat = await this.catsService.create(catData);
+        return {
+            message: "Đã tạo con mèo có tên là " + catData.name,
+            data: newCat
+        };
+
     }
 }
+
 
