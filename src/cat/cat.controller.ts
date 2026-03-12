@@ -4,8 +4,11 @@ import {Cat} from '../interfaces/cat.interfaces';
 import { CreateCatDto } from '../dto/create-cat.dto';
 import { HttpExceptionFilter } from '../common/filters/http-exception.filter';
 import { AllExceptionsFilter } from '../common/filters/all-exceptions.filter';
-import { ApiKeyGuard} from 'src/common/guards/api-key.guard';
 import { Public } from 'src/common/decorators/public/public.decorator';
+import { Roles } from '../common/decorators/roles.decorator'
+import { Role } from '../common/enums/role.enum'
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 // test base exception filter
 // @UseFilters(AllExceptionsFilter)
@@ -23,16 +26,9 @@ export class CatController {
         return this.catsService.findAll();
     }
 
-    // redirect
-    // @Get('wiki')
-    // @Redirect('https://en.wikipedia.org/wiki/Cat', 302)
-    // redirctToWiki() {
-    //     // Hàm này sẽ tự động chuyển hướng đến URL đã chỉ định
-    // }
 
     // search theo param
     @Get(':id')
-    @Public()
     findOne(@Param('id') id : string): string {
         // exception
         if (id > '100') {
@@ -44,13 +40,10 @@ export class CatController {
         return `Đây là con mèo có id là ${id}`;
     }
 
-    // Post request, @Header decorator
-    // áp dụng guard ở đây
+    // Post, RBAC
     @Post()
-    // @UseGuards(ApiKeyGuard)
-    // @Header('Cache-Control', 'no-cache')
-    // @Header('X-Custom-Message', 'Xin-chao-NestJS')
-    @Public()
+    @UseGuards(AuthGuard, RolesGuard)
+    @Roles(Role.Admin)
     async create(@Body() catData: CreateCatDto): Promise<any> {
         const newCat = await this.catsService.create(catData);
         return {

@@ -13,10 +13,7 @@ import { UsersModule } from './users/users.module';
 @Module({
   imports: [CatModule, AuthModule, UsersModule],
   controllers: [AppController],
-  providers: [AppService ,{
-    provide: APP_GUARD, 
-    useClass: ApiKeyGuard
-  }],
+  providers: [AppService]
 })
 
 // // apply middleware
