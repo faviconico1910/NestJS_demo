@@ -10,19 +10,22 @@ export class UsersService {
             userId: 1,
             username: 'john',
             password: 'changeme',
-            roles: [Role.User]
+            roles: [Role.User],
+            email: 'phannguyenkieumy123@gmail.com'
         },
         {
             userId: 2,
             username: 'maria',
             password: 'guess',
-            roles: [Role.User]
+            roles: [Role.User],
+            email: 'dauducanphu1910@gmail.com'
         },
         {
             userId: 3, 
             username: 'admin',
             password: 'hard',
-            roles: [Role.Admin]
+            roles: [Role.Admin],
+            email: '23521179@gm.uit.edu.vn'
         }
     ]
 

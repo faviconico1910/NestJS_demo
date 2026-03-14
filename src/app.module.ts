@@ -9,9 +9,14 @@ import { APP_GUARD } from '@nestjs/core';
 import { ApiKeyGuard } from './common/guards/api-key.guard';  
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module'
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [CatModule, AuthModule, UsersModule],
+  imports: [CatModule, AuthModule, UsersModule, 
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService]
 })
