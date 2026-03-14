@@ -2,6 +2,7 @@ import { Controller, Body, Post, HttpCode, HttpStatus, UseGuards, Get, Request} 
 import { AuthService } from './auth.service';
 import { Public } from 'src/common/decorators/public/public.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { UserDto } from '../users/dto/user.dto';
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) {}
@@ -9,8 +10,8 @@ export class AuthController {
     @Public()
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signIn(@Body() signInDto : Record<string, any> ) {
-        return this.authService.signIn(signInDto.username, signInDto.password);
+    signIn(@Body() userDto : UserDto) {
+        return this.authService.signIn(userDto.username, userDto.password);
     }
     @UseGuards(AuthGuard)
     @Get('profile')

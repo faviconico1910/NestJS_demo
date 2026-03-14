@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-export type User = any;
-import { Role } from '../common/enums/role.enum';
+import { Role } from '../../common/enums/role.enum'
+import { User } from './interfaces/user.interfaces'
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class UsersService {
     private readonly users = [
@@ -23,6 +25,14 @@ export class UsersService {
             roles: [Role.Admin]
         }
     ]
+
+    // hash
+    constructor() {
+        this.users = this.users.map(user => ({
+            ...user,
+            password: bcrypt.hashSync(user.password, 10)
+        }));
+    }
 
     async findOne(username: string): Promise<User | undefined>
     {
