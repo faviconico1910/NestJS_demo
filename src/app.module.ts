@@ -9,13 +9,31 @@ import { APP_GUARD } from '@nestjs/core';
 import { ApiKeyGuard } from './common/guards/api-key.guard';  
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module'
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [CatModule, AuthModule, UsersModule, 
     ConfigModule.forRoot({
       isGlobal: true
     }),
+      TypeOrmModule.forRootAsync({
+        inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        
+        // Tự động load các Entity 
+        autoLoadEntities: true, 
+        
+        // đã tự tạo bảng trước đó
+        synchronize: false,
+      })
+    })
   ],
   controllers: [AppController],
   providers: [AppService]

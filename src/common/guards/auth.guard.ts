@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
     } 
     catch (error) {
       console.log(error);
-
+      throw new UnauthorizedException('Token không hợp lệ hoặc đã hết hạn');
     }
     return true;
   }
