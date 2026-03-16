@@ -4,10 +4,16 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module'
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { Transform } from 'class-transformer';
+import { TransformInterceptor } from 'src/common/interceptors/transform.interceptor';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, {
+    provide: APP_INTERCEPTOR,
+    useClass: TransformInterceptor
+  }],
   imports: [UsersModule,
     JwtModule.register({
       global: true,
