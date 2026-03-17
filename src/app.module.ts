@@ -30,8 +30,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         // Tự động load các Entity 
         autoLoadEntities: true, 
         
-        // true để nhường cho init.sql
-        synchronize: true,
+        // tắt để k xung đột với migration
+        synchronize: false
       })
     })
   ],
