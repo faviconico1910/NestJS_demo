@@ -4,6 +4,7 @@ import {config} from 'dotenv'
 // Import Entities
 import {User} from '../modules/users/entities/user.entity'
 import {Role} from '../modules/users/entities/role.entity'
+import {Cat} from '../modules/cat/entities/cat.entity'
 
 config()
 
@@ -15,7 +16,7 @@ export default new DataSource({
   password: process.env.DB_PASSWORD || '123',
   database: process.env.DB_DATABASE || 'pet_shop',
   
-  entities: [User, Role], 
+  entities: [User, Role, Cat], 
   
   // nơi chứa migrations
   migrations: ['src/db/migrations/*.ts'], 

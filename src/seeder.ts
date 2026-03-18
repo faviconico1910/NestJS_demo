@@ -2,8 +2,10 @@ import { seeder } from 'nestjs-seeder';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InitSeeder } from './seeders/init.seeder';
+import { CatSeeder } from './seeders/cats.seeder';
 import { Role } from './modules/users/entities/role.entity';
 import { User } from './modules/users/entities/user.entity';
+import { Cat } from './modules/cat/entities/cat.entity';
 
 seeder({
   imports: [
@@ -18,9 +20,9 @@ seeder({
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         autoLoadEntities: true,
-        synchronize: true,
+        synchronize: false,
       }),
     }),
-    TypeOrmModule.forFeature([Role, User]),
+    TypeOrmModule.forFeature([Role, User, Cat]),
   ],
-}).run([InitSeeder]);
+}).run([InitSeeder, CatSeeder]);

@@ -15,10 +15,21 @@ export class InitSeeder implements Seeder {
 
   async seed(): Promise<any> {
     console.log('Seeding roles...');
+    // Check existing roles
+    let roleAdmin = await this.roleRepo.findOne({ where: { name: 'Admin' } });  
+    let roleUser = await this.roleRepo.findOne({ where: { name: 'User' } });
 
-    const roleAdmin = this.roleRepo.create({ name: 'Admin' });
-    const roleUser = this.roleRepo.create({ name: 'User' });
-    await this.roleRepo.save([roleAdmin, roleUser]);
+    if (roleAdmin == null) {
+      console.log('Admin role not found, creating...');
+      roleAdmin = this.roleRepo.create({ name: 'Admin' });
+      await this.roleRepo.save(roleAdmin);
+    }
+
+    if (roleUser == null) {
+      console.log('User role not found, creating...');
+      roleUser = this.roleRepo.create({ name: 'User' });
+      await this.roleRepo.save(roleUser);
+    }
 
     const hashAdmin = await bcrypt.hash('admin', 10);
     const hashJohn = await bcrypt.hash('changeme', 10);
@@ -26,30 +37,50 @@ export class InitSeeder implements Seeder {
 
     console.log('Seeding users...');
 
-    const adminUser = this.userRepo.create({
-      username: 'admin',
-      password: hashAdmin,
-      email: '23521179@gm.uit.edu.vn',
-      roles: [roleAdmin],
-    });
 
-    const johnUser = this.userRepo.create({
-      username: 'john',
-      password: hashJohn,
-      email: 'phannguyenkieumy123@gmail.com',
-      roles: [roleUser],
-    });
+    const userData = [
+      {
+        username: 'admin',
+        password: hashAdmin,
+        email: '23521179@gm.uit.edu.vn',
+        roles: [roleAdmin]
+      },
+      {
+        username: 'john',
+        password: hashJohn,
+        email: 'phannguyenkieumy123@gmail.com',
+        roles: [roleUser]
+      },
+      {
+        username: 'maria',
+        password: hashMaria,
+        email: 'dauducanphu1910@gmail.com',
+        roles: [roleUser]
+      },
+      {
+        username: 'alice',
+        password: await bcrypt.hash('alicepass', 10),
+        email: 'alice@gmail.com',
+        roles: [roleUser]
+      }
+    ];
 
-    const mariaUser = this.userRepo.create({
-      username: 'maria',
-      password: hashMaria,
-      email: 'dauducanphu1910@gmail.com',
-      roles: [roleUser],
-    });
 
-    // đổ dữ liệu vào database
-    await this.userRepo.save([adminUser, johnUser, mariaUser]);
-
+    for(const user of userData) {
+      let existingUser = await this.userRepo.findOneBy({ username: user.username });
+      if (!existingUser) {
+        existingUser = this.userRepo.create({
+          username: user.username,
+          password: user.password,
+          email: user.email,
+          roles: user.roles || []
+        });
+        await this.userRepo.save(existingUser);
+        console.log(`Created user: ${user.username}`);
+      } else {
+        console.log(`User ${user.username} đã tồn tại`);
+      }
+    }
     console.log('Completed!');
   }
 
