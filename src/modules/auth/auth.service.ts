@@ -15,7 +15,11 @@ export class AuthService {
             if (!user) {
                 throw new UnauthorizedException('Tài khoản không tồn tại');
             }
-            if (pass != user.password) {
+
+            console.log('input password:', pass);
+            console.log('stored password:', user.password);
+            
+            if (!await bcrypt.compare(pass, user.password)) {
                 throw new UnauthorizedException('Mật khẩu không đúng');
             }
             const payload = {sub: user.id, username: user.username, 

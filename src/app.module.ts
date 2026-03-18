@@ -5,12 +5,13 @@ import { CatController } from './modules/cat/cat.controller';
 import { CatModule } from './modules/cat/cat.module';
 import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
 import { logger } from './common/middleware/logger/logger.middleware';  
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ApiKeyGuard } from './common/guards/api-key.guard';  
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module'
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 @Module({
   imports: [CatModule, AuthModule, UsersModule, 
@@ -36,7 +37,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     })
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransformInterceptor
+    }
+  ]
 })
 
 // // apply middleware
