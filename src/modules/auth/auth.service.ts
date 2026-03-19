@@ -11,11 +11,11 @@ export class AuthService {
         private jwtService: JwtService,
     ) {}
         async signIn(username: string, pass: string): Promise<{access_token: string}> {
-            const user = await this.usersService.findOne(username);
+            const user = await this.usersService.findByUsername(username);
             if (!user) {
                 throw new UnauthorizedException('Tài khoản không tồn tại');
             }
-            if (pass != user.password) {
+            if (!await bcrypt.compare(pass, user.password)) {
                 throw new UnauthorizedException('Mật khẩu không đúng');
             }
             const payload = {sub: user.id, username: user.username, 

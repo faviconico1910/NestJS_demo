@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import {Cat} from './interfaces/cat.interfaces';
-
+import { CatRepository } from 'src/infrastructure/repositories/cat.repository';
+import { CreateCatDto } from './dto/create-cat.dto';
 @Injectable()
 export class CatsService {
-    private readonly cats: any[] = [];
+    constructor(private readonly catRepo: CatRepository) {}
 
-    create (cat: Cat){
-        this.cats.push(cat);
+    // find all
+    async findAll(): Promise<Cat[]> {
+        return  this.catRepo.findAll();
     }
 
-    findAll(): Cat[] {
-        return this.cats;
+    // find id
+    async findOne(id: number): Promise<Cat | null> {    
+        return this.catRepo.findOne({where: {id}});
+    }
+
+    // create
+    async create(catData: CreateCatDto): Promise<Cat> {
+        return this.catRepo.create(catData);
     }
 }

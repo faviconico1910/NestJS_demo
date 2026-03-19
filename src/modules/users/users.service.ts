@@ -4,22 +4,22 @@ import { Repository } from 'typeorm';
 // import { Role } from '../../common/enums/role.enum'
 import { User } from './entities/user.entity'
 import * as bcrypt from 'bcrypt';
+import { UserRepository } from '../../infrastructure/repositories/user.repository';
 
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>
+        private readonly userRepo: UserRepository
     ) {}
 
-    async findOne(username: string): Promise<User | undefined>
-    {
-        const user = await this.userRepository.findOne({
-            where: {username: username},
-            relations: ['roles']
-        });
-        console.log("Đã truy cập vào database thành công");
-        return user ?? undefined;
+    // gọi hàm findByUsername
+    async findByUsername(username:string):Promise <User | undefined>{
+        return this.userRepo.findByUsername(username);
+    }
+    
+    // find id
+    async findOne(id: number): Promise<User | null> {
+        return this.userRepo.findOne({where: {id}});
     }
     
 }
