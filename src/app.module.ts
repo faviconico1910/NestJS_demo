@@ -1,16 +1,14 @@
-import { Logger, MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CatController } from './modules/cat/cat.controller';
-import { CatModule } from './modules/cat/cat.module';
-import { LoggerMiddleware } from './common/middleware/logger/logger.middleware';
-import { logger } from './common/middleware/logger/logger.middleware';  
-import { APP_GUARD } from '@nestjs/core';
-import { ApiKeyGuard } from './common/guards/api-key.guard';  
-import { AuthModule } from './modules/auth/auth.module';
-import { UsersModule } from './modules/users/users.module'
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { logger } from './common/middleware/logger/logger.middleware';
+import { AuthModule } from './modules/auth/auth.module';
+import { CatController } from './modules/cat/cat.controller';
+import { CatModule } from './modules/cat/cat.module';
+import { RegisterModule } from './modules/register/register.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [CatModule, AuthModule, UsersModule, 
@@ -33,7 +31,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         // tắt để k xung đột với migration
         synchronize: false
       })
-    })
+    }),
+      RegisterModule
   ],
   controllers: [AppController],
   providers: [AppService]

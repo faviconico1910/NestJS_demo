@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 // import { Role } from '../../common/enums/role.enum'
 import { User } from './entities/user.entity'
 import * as bcrypt from 'bcrypt';
@@ -22,4 +22,8 @@ export class UsersService {
         return this.userRepo.findOne({where: {id}});
     }
     
+    // hàm create để dùng trong modules register
+    async create(user: DeepPartial<User>): Promise<User | null> {
+        return this.userRepo.create(user);
+    }
 }
