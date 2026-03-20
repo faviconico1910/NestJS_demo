@@ -1,10 +1,9 @@
 // import validation config
-import './config/env.validation';
-import { envConfig } from './config/env.validation';
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { AllExceptionsFilter } from './core/filters/all-exceptions.filter';
 
 
 
@@ -28,6 +27,6 @@ async function bootstrap() {
   // use global guards
   // app.useGlobalGuards(new ApiKeyGuard)
 
-  await app.listen(envConfig.PORT);
+  await app.listen(3000);
 }
 bootstrap();
