@@ -9,11 +9,13 @@ import { CatController } from './modules/cat/presenters/cat.controller';
 import { CatModule } from './modules/cat/cat.module';
 import { RegisterModule } from './modules/register/register.module';
 import { UsersModule } from './modules/users/users.module';
+import { DogModule } from './modules/dog/dog.module';
+
 
 @Module({
   imports: [CatModule, AuthModule, UsersModule, 
     ConfigModule.forRoot({
-      isGlobal: true
+      isGlobal: true, // Cho phép sử dụng ConfigService ở bất kỳ đâu trong ứng dụng mà không cần import ConfigModule
     }),
       TypeOrmModule.forRootAsync({
         inject: [ConfigService],
@@ -32,7 +34,8 @@ import { UsersModule } from './modules/users/users.module';
         synchronize: false
       })
     }),
-      RegisterModule
+      RegisterModule,
+      DogModule
   ],
   controllers: [AppController],
   providers: [AppService]

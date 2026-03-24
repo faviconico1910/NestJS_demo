@@ -6,6 +6,8 @@ import { CatSeeder } from '../modules/cat/infras/db/seeders/cats.seeder';
 import {User} from '../modules/users/infras/db/orm-entities/user.entity'
 import {Role} from '../modules/users/infras/db/orm-entities/role.entity'
 import { Cat } from '../modules/cat/infras/db/orm-entities/cat.entity';
+import { DogEntity } from '../modules/dog/infras/db/orm-entitites/dog.orm-entity';
+import { DogSeeder } from '../modules/dog/infras/db/seeders/dogs.seeder';
 
 seeder({
   imports: [
@@ -23,6 +25,6 @@ seeder({
         synchronize: false,
       }),
     }),
-    TypeOrmModule.forFeature([Role, User, Cat]),
+    TypeOrmModule.forFeature([Role, User, Cat, DogEntity]),
   ],
-}).run([InitSeeder, CatSeeder]);
+}).run([InitSeeder, CatSeeder, DogSeeder]);
