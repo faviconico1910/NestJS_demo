@@ -20,6 +20,9 @@ export class User {
   @Column({ length: 15, nullable: true })
   phone: string;
 
+  @Column({name: 'refresh_token', type:'varchar', length: 255, nullable: true})
+  refreshToken: string | null;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

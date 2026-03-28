@@ -23,4 +23,9 @@ export class UserRepository extends BaseRepository<User> {
         console.log("Đã truy cập vào database thành công");
         return user ?? undefined;
     }
+
+    // hàm update
+    async update(id: number, partialEntity: Partial<User>): Promise<void> {
+        await this.userRepo.update(id, partialEntity);
+    }
 }

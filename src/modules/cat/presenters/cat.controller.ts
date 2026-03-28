@@ -51,7 +51,6 @@ export class CatController {
             message: "Đã tạo con mèo có tên là " + catData.name,
             data: newCat
         };
-
     }
 }
 

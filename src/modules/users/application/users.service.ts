@@ -19,11 +19,22 @@ export class UsersService {
     
     // find id
     async findOne(id: number): Promise<User | null> {
-        return this.userRepo.findOne({where: {id}});
+        const data = await this.userRepo.findOne({
+            where: {id},
+            relations: ['roles']
+        });
+        console.log(data)
+        return data;
     }
     
     // hàm create để dùng trong modules register
     async create(user: DeepPartial<User>): Promise<User | null> {
         return this.userRepo.create(user);
+    }
+
+    // hàm lưu refresh token
+    async updateRefreshToken(userId: number, hashedRefreshToken: string | null): Promise<void> 
+    {
+        await this.userRepo.update(userId, { refreshToken: hashedRefreshToken });
     }
 }

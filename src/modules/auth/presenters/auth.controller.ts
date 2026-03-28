@@ -14,6 +14,18 @@ export class AuthController {
     signIn(@Body() userDto : UserDto) {
         return this.authService.signIn(userDto.username, userDto.password);
     }
+
+    // refresh endpoint
+    @Post('refresh')
+    async refresh(@Body() res: {userId: number, refreshToken: string} ) {
+        return this.authService.refreshTokens(res.userId, res.refreshToken)
+    }
+
+    @UseGuards(AuthGuard) 
+    @Post('logout')
+    async logout(@Body() userId: number) {
+        return this.authService.logout(userId);
+    }
     
     @Get('confirm')
     async confirmEmail(@Query('token') token: string) {
