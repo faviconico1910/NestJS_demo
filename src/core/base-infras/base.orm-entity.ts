@@ -2,7 +2,8 @@ import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'type
 
 export abstract class BaseOrmEntity {
   @PrimaryGeneratedColumn() 
-
+  id:number;
+  
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

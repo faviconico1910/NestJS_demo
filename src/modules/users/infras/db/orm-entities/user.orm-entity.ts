@@ -1,13 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, JoinTable } from "typeorm";
 
-import {Role} from './role.entity'
+import {RoleEntity} from './role.orm-entity'
 
+import { BaseOrmEntity } from "src/core/base-infras/base.orm-entity";
 
 @Entity('users')
-export class User {
-  @PrimaryGeneratedColumn({ name: 'user_id' })
-  id: number;
-
+export class UserEntity extends BaseOrmEntity {
   @Column({ length: 50, unique: true })
   username: string;
 
@@ -23,11 +21,9 @@ export class User {
   @Column({name: 'refresh_token', type:'varchar', length: 255, nullable: true})
   refreshToken: string | null;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
 
   // Join bảng
-  @ManyToMany(() => Role)
+  @ManyToMany(() => RoleEntity)
   @JoinTable({
     name: 'user_roles', // bảng trung gian
     joinColumn: { 
@@ -39,5 +35,5 @@ export class User {
       referencedColumnName: 'id' 
     },
   })
-  roles: Role[]; 
+  roles: RoleEntity[]; 
 }

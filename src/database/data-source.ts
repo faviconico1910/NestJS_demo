@@ -2,9 +2,9 @@ import { DataSource } from "typeorm";
 import {config} from 'dotenv'
 
 // Import Entities
-import {User} from '../modules/users/infras/db/orm-entities/user.entity'
-import {Role} from '../modules/users/infras/db/orm-entities/role.entity'
-import {Cat} from '../modules/cat/infras/db/orm-entities/cat.orm-entity'
+import {UserEntity} from '../modules/users/infras/db/orm-entities/user.orm-entity'
+import {RoleEntity} from '../modules/users/infras/db/orm-entities/role.orm-entity'
+import {CatEntity} from '../modules/cat/infras/db/orm-entities/cat.orm-entity'
 import { DogEntity } from '../modules/dog/infras/db/orm-entitites/dog.orm-entity';
 
 config()
@@ -17,7 +17,7 @@ export default new DataSource({
   password: process.env.DB_PASSWORD || '123',
   database: process.env.DB_DATABASE || 'pet_shop',
   
-  entities: [User, Role, Cat, DogEntity], 
+  entities: [UserEntity, RoleEntity, CatEntity, DogEntity], 
   
   // nơi chứa migrations
   migrations: ['src/database/migrations/*.ts'], 

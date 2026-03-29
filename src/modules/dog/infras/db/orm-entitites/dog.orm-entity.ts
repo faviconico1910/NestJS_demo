@@ -1,10 +1,8 @@
+import { BaseOrmEntity } from 'src/core/base-infras/base.orm-entity';
 import {Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity('dogs')
-export class DogEntity {
-    @PrimaryGeneratedColumn({name: 'dog_id'})
-    id: number;
-
+export class DogEntity extends BaseOrmEntity {
     @Column()
     name: string;
 

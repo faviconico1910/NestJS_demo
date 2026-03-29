@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Seeder } from 'nestjs-seeder';
 import * as bcrypt from 'bcrypt';
-import { Role } from '../orm-entities/role.entity';
-import { User } from '../orm-entities/user.entity';
+import { RoleEntity } from '../orm-entities/role.orm-entity';
+import { UserEntity } from '../orm-entities/user.orm-entity';
 
 @Injectable()
 export class InitSeeder implements Seeder {
   constructor(
-    @InjectRepository(Role) private readonly roleRepo: Repository<Role>,
-    @InjectRepository(User) private readonly userRepo: Repository<User>,
+    @InjectRepository(RoleEntity) private readonly roleRepo: Repository<RoleEntity>,
+    @InjectRepository(UserEntity) private readonly userRepo: Repository<UserEntity>,
   ) {}
 
   async seed(): Promise<any> {

@@ -23,7 +23,7 @@ export class RegisterService {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Ngược lại, tạo người dùng mới và lưu vào database
-        const newUser = await this.usersService.create({
+        const newUser = await this.usersService.createUser({
             username,
             email,
             password: hashedPassword,   

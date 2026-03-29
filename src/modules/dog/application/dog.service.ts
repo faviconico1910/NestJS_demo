@@ -1,7 +1,7 @@
 import { Inject, Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import { DOG_REPOSITORY } from '../domain/dog.repository.interface';
-import type { IDogRepository } from '../domain/dog.repository.interface';
-import { Dog } from '../domain/dog.entity';
+import { DOG_REPOSITORY } from '../domain/repositories/dog.repository.interface';
+import type { IDogRepository } from '../domain/repositories/dog.repository.interface';
+import { Dog } from '../domain/entities/dog.entity';
 import { CreateDogDto } from '../presenters/dto/create-dog.dto';
 
 
@@ -12,21 +12,20 @@ export class DogService {
         private readonly dogRepository: IDogRepository) {}
 
     async createDog(dogDto : CreateDogDto): Promise<Dog> {
-        const newDog = Object.assign(new Dog(), {
-            name: dogDto.name,
-            age: dogDto.age,
-            breed: dogDto.breed,
-            price: dogDto.price,
-            status: 'available'
-        });
+        const newDog = {
+                name: dogDto.name,
+                age: dogDto.age,
+                breed: dogDto.breed,
+                price: dogDto.price,
+        }
+
 
         // check if dog with the same name already exists
         const existingDog = await this.dogRepository.findByName(dogDto.name);
         if (existingDog) {
             throw new BadRequestException('Chó đã tồn tại');
         }
-        await this.dogRepository.save(newDog);
-        return newDog;  
+        return await this.dogRepository.create(newDog);
     }
 
     // buy dog

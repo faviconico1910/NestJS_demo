@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeor
 import { BaseOrmEntity } from "../../../../../core/base-infras/base.orm-entity";
 
 @Entity('cats')
-export class Cat extends BaseOrmEntity {
+export class CatEntity extends BaseOrmEntity {
     @Column({length: 50})
     name: string;
 
@@ -11,5 +11,11 @@ export class Cat extends BaseOrmEntity {
 
     @Column({length: 50})
     breed: string;
+
+    @Column({type: 'decimal'})
+    price: number;
+
+    @Column({default: 'available'})
+    status: 'available' | 'sold';
 
 }

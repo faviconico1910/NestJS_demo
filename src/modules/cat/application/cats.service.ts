@@ -16,6 +16,9 @@ export class CatsService  {
             age: catDto.age,
             breed: catDto.breed,
         }
+        if (await this.catRepo.findByName(catDto.name)) {
+            throw new Error('Mèo cùng tên đã tồn tại');
+        }
         return await this.catRepo.create(newCat);
     }
 

@@ -1,39 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
 // import { Role } from '../../common/enums/role.enum'
-import { User } from '../infras/db/orm-entities/user.entity';
+import { UserEntity } from '../infras/db/orm-entities/user.orm-entity';
 import * as bcrypt from 'bcrypt';
-import { UserRepository } from '../infras/db/repositories/user.repository';
-
+import type { IUserRepository } from '../domain/repositories/user.repo.interface';
+import { USER_REPOSITORY } from '../domain/repositories/user.repo.interface';
+import { User } from '../domain/entities/user.entity';
 @Injectable()
 export class UsersService {
     constructor(
-        private readonly userRepo: UserRepository
+        @Inject(USER_REPOSITORY)
+        readonly userRepo: IUserRepository
     ) {}
 
-    // gọi hàm findByUsername
-    async findByUsername(username:string):Promise <User | undefined>{
-        return this.userRepo.findByUsername(username);
-    }
-    
-    // find id
-    async findOne(id: number): Promise<User | null> {
-        const data = await this.userRepo.findOne({
-            id
-        });
-        console.log(data)
-        return data;
-    }
-    
-    async findOneWithRelations(id: number): Promise<User | null> {
-        return this.userRepo.findOneWithRelations(id);
-    }
-    // hàm create để dùng trong modules register
-    async create(user: Partial<User>): Promise<User | null> {
-        return this.userRepo.create(user);
+    async findByUsername(username: string) {
+        return await this.userRepo.findByUsername(username);
     }
 
+    async findOneWithRelations(id: number) {
+        return await this.userRepo.findOneWithRelations(id);
+    }
+
+    // tạo user mới
+    async createUser(data: { username: string; email: string; password: string }): Promise<User> {
+        const newUser = new User(
+            0,
+            data.username,
+            data.email,
+            data.password,
+            null,
+            null,
+            [],
+            undefined,
+            undefined
+        );
+            return await this.userRepo.save(newUser);
+    }
     // hàm lưu refresh token
     async updateRefreshToken(userId: number, hashedRefreshToken: string | null): Promise<void> 
     {

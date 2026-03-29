@@ -1,5 +1,5 @@
 import { BaseEntity } from "../../../../core/base-domain/base.entity";
-export class Cat extends BaseEntity<number> {
+export class Dog extends BaseEntity<number> {
     name: string;
     age: number
     breed: string;
@@ -25,11 +25,11 @@ export class Cat extends BaseEntity<number> {
     }
     // business logic
     sold(): void {
-        // logic to mark the cat as sold
+        // logic to mark the dog as sold
         if (this.status === 'available') {
             this.status = 'sold';
         } else {
-            throw new Error('Mèo đã được bán');
+            throw new Error('Chó đã được bán');
         }
     }
 }
