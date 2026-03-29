@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, MinLength, IsArray, IsEnum } from 'class-validator';
-import { Role } from '../../../../core/enums/role.enum';
+import { Role } from '../../../../common/enums/role.enum';
 export class UserDto {
     @IsNotEmpty({ message: 'Tên đăng nhập không được để trống'})
     @IsString()

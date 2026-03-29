@@ -1,14 +1,13 @@
 import { Controller, Get, Req, Post, Query, Param, Body, Header, Redirect, HttpException, HttpStatus, UseFilters, All, UseGuards} from '@nestjs/common';
 import { CatsService } from '../application/cats.service';
-import {Cat} from '../domain/interfaces/cat.interfaces';
 import { CreateCatDto } from './dto/create-cat.dto';
-import { HttpExceptionFilter } from '../../../core/filters/http-exception.filter';
-import { AllExceptionsFilter } from '../../../core/filters/all-exceptions.filter';
-import { Public } from 'src/core/decorators/public/public.decorator';
-import { Roles } from '../../../core/decorators/roles.decorator'
-import { Role } from '../../../core/enums/role.enum'
-import { RolesGuard } from 'src/core/guards/roles.guard';
-import { AuthGuard } from 'src/core/guards/auth.guard';
+import { HttpExceptionFilter } from '../../../common/filters/http-exception.filter';
+import { AllExceptionsFilter } from '../../../common/filters/all-exceptions.filter';
+import { Public } from 'src/common/decorators/public/public.decorator';
+import { Roles } from '../../../common/decorators/roles.decorator'
+import { Role } from '../../../common/enums/role.enum'
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 // test base exception filter
 // @UseFilters(AllExceptionsFilter)
@@ -18,13 +17,6 @@ import { AuthGuard } from 'src/core/guards/auth.guard';
 export class CatController {
     //gọi service
     constructor(private readonly catsService: CatsService){}
-    // tìm kiếm theo query
-
-    @Get()
-    async findAll(@Query('color') color: string): Promise<Cat[]>{
-        await new Promise(resolve => setTimeout(resolve, 5000)); 
-        return this.catsService.findAll();
-    }
 
 
     // search theo param
@@ -46,7 +38,7 @@ export class CatController {
     @UseGuards(AuthGuard, RolesGuard)
     @Roles(Role.Admin)
     async create(@Body() catData: CreateCatDto): Promise<any> {
-        const newCat = await this.catsService.create(catData);
+        const newCat = await this.catsService.createCat(catData);
         return {
             message: "Đã tạo con mèo có tên là " + catData.name,
             data: newCat

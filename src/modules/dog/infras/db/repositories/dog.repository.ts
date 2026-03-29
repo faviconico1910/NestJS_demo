@@ -2,7 +2,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { BaseRepository } from "../../../../../core/base/base.repository";
+import { BaseRepository } from "../../../../../core/base-infras/base.repo.impl";
 import { DogEntity } from "../orm-entitites/dog.orm-entity";
 import type { IDogRepository } from "../../../domain/dog.repository.interface";
 import { Dog } from "../../../domain/dog.entity";
@@ -17,10 +17,7 @@ export class DogRepository extends BaseRepository<DogEntity> implements IDogRepo
         super(dogRepo);
     }
 
-    async save(dog: Dog): Promise<void> {
-        const dogEntity = this.repository.create(dog);
-        await this.repository.save(dogEntity);
-    }
+
 
     async findById(id: number): Promise<Dog | null> {
         const dogEntity = await this.repository.findOne({ where: { id } });

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Seeder } from 'nestjs-seeder';
-import {Cat} from '../orm-entities/cat.entity';
+import {Cat} from '../orm-entities/cat.orm-entity';
 
 @Injectable()
 export class CatSeeder implements Seeder {

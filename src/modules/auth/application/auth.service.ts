@@ -72,7 +72,7 @@ export class AuthService {
         }
 
         async refreshTokens(userId: number, refreshToken: string): Promise<Tokens> {
-            const user = await this.usersService.findOne(userId);
+            const user = await this.usersService.findOneWithRelations(userId);
             if (!user) {
                 throw new UnauthorizedException('Tài khoản không tồn tại');
             }

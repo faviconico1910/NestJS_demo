@@ -1,10 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from "typeorm";
+import { BaseOrmEntity } from "../../../../../core/base-infras/base.orm-entity";
 
 @Entity('cats')
-export class Cat{
-    @PrimaryGeneratedColumn({name: 'cat_id'})
-    id: number;
-
+export class Cat extends BaseOrmEntity {
     @Column({length: 50})
     name: string;
 
@@ -14,6 +12,4 @@ export class Cat{
     @Column({length: 50})
     breed: string;
 
-    @CreateDateColumn({name: 'created_at'})
-    createdAt: Date;
 }

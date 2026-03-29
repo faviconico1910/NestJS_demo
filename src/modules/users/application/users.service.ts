@@ -20,15 +20,17 @@ export class UsersService {
     // find id
     async findOne(id: number): Promise<User | null> {
         const data = await this.userRepo.findOne({
-            where: {id},
-            relations: ['roles']
+            id
         });
         console.log(data)
         return data;
     }
     
+    async findOneWithRelations(id: number): Promise<User | null> {
+        return this.userRepo.findOneWithRelations(id);
+    }
     // hàm create để dùng trong modules register
-    async create(user: DeepPartial<User>): Promise<User | null> {
+    async create(user: Partial<User>): Promise<User | null> {
         return this.userRepo.create(user);
     }
 

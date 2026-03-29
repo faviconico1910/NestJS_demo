@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { BaseRepository } from "../../../../../core/base/base.repository";
+import { BaseRepository } from "../../../../../core/base-infras/base.repo.impl";
 import { User } from "../orm-entities/user.entity";
 
 @Injectable()
@@ -24,8 +24,17 @@ export class UserRepository extends BaseRepository<User> {
         return user ?? undefined;
     }
 
+    async findOneWithRelations(id: number): Promise<User | null> {
+        const user = await this.userRepo.findOne({
+            where: { id },
+            relations: ['roles']
+        });
+        console.log(user);
+        return user ?? null;
+    }
     // hàm update
-    async update(id: number, partialEntity: Partial<User>): Promise<void> {
+    async update(id: number, partialEntity: Partial<User>): Promise<User> {
         await this.userRepo.update(id, partialEntity);
+        return await this.findById(id) as User;
     }
 }

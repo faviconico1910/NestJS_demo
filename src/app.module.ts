@@ -3,7 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { logger } from './core/middleware/logger/logger.middleware';
+import { logger } from './common/middleware/logger/logger.middleware';
 import { AuthModule } from './modules/auth/auth.module';
 import { CatController } from './modules/cat/presenters/cat.controller';
 import { CatModule } from './modules/cat/cat.module';

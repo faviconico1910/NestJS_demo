@@ -9,4 +9,7 @@ export class CreateCatDto {
 
   @ApiProperty({ example: 'Mèo Béo', description: 'Giống Mèo' })
   breed: string;
+  
+  @ApiProperty({example: 500000})
+  price: number;
 }

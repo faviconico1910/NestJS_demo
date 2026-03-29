@@ -4,7 +4,7 @@ import {config} from 'dotenv'
 // Import Entities
 import {User} from '../modules/users/infras/db/orm-entities/user.entity'
 import {Role} from '../modules/users/infras/db/orm-entities/role.entity'
-import {Cat} from '../modules/cat/infras/db/orm-entities/cat.entity'
+import {Cat} from '../modules/cat/infras/db/orm-entities/cat.orm-entity'
 import { DogEntity } from '../modules/dog/infras/db/orm-entitites/dog.orm-entity';
 
 config()
