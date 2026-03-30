@@ -13,7 +13,7 @@ export class User extends BaseEntity<number> {
         id: number, 
         username: string,
         password: string,
-        email: string,
+        email: string | null,
         phone: string | null,
         refreshToken: string | null,
         roles: Role[],

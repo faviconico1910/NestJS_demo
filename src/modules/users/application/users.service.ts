@@ -26,8 +26,8 @@ export class UsersService {
         const newUser = new User(
             0,
             data.username,
-            data.email,
             data.password,
+            data.email,
             null,
             null,
             [],

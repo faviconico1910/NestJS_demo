@@ -41,6 +41,9 @@ export class UserMapper extends BaseMapper<User, UserEntity> {
         }
         ormEntity.username = domainEntity.username;
         ormEntity.password = domainEntity.password;
+        ormEntity.email = domainEntity.email;
+        ormEntity.phone = domainEntity.phone;
+        ormEntity.refreshToken = domainEntity.refreshToken;
 
         // Lưu db
         if (domainEntity.roles && domainEntity.roles.length > 0) {

@@ -12,11 +12,11 @@ export class UserEntity extends BaseOrmEntity {
   @Column({ length: 255 })
   password: string;
 
-  @Column({ length: 100, unique: true })
-  email: string;
+  @Column({ type: 'varchar', length: 100, unique: true, nullable: true })
+  email: string | null;
 
-  @Column({ length: 15, nullable: true })
-  phone: string;
+  @Column({ type: 'varchar', length: 15, nullable: true })
+  phone: string | null;
 
   @Column({name: 'refresh_token', type:'varchar', length: 255, nullable: true})
   refreshToken: string | null;
