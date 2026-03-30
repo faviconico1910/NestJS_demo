@@ -6,6 +6,7 @@ import { UserEntity } from "../orm-entities/user.orm-entity";
 import { User } from "../../../domain/entities/user.entity";
 import { UserMapper} from "../mappers/user.mapper";
 import type { IUserRepository } from "../../../domain/repositories/user.repo.interface";
+import { TypeOrmDriver } from "src/core/base-infras/driver/typeorm.driver";
 @Injectable()
 export class UserRepository extends BaseRepository<User, UserEntity> implements IUserRepository {
     constructor (
@@ -14,7 +15,7 @@ export class UserRepository extends BaseRepository<User, UserEntity> implements 
         readonly mapper: UserMapper
     )
     {
-        super(userRepo, mapper);
+        super(new TypeOrmDriver(userRepo), mapper);
     }
     // tìm theo username
     async findByUsername(username: string): Promise<User | null>

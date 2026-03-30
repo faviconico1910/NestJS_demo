@@ -6,6 +6,7 @@ import { Cat } from "src/modules/cat/domain/entities/cat.entity";
 import { ICatRepository } from "src/modules/cat/domain/repositories/cat.repository.interface";
 import { CatEntity } from "../orm-entities/cat.orm-entity";
 import { CatMapper } from "../mappers/cat.mapper";
+import { TypeOrmDriver } from "src/core/base-infras/driver/typeorm.driver";
 
 @Injectable()
 export class CatRepository extends BaseRepository<Cat, CatEntity> implements ICatRepository {
@@ -15,7 +16,7 @@ export class CatRepository extends BaseRepository<Cat, CatEntity> implements ICa
         readonly mapper: CatMapper
     )
     {        
-        super(catRepo, mapper);
+        super(new TypeOrmDriver(catRepo), mapper);
     }
 
     // những hàm riêng cho mèo thì viết ở đây.

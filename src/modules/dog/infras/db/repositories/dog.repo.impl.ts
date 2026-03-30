@@ -7,6 +7,7 @@ import { DogEntity } from "../orm-entitites/dog.orm-entity";
 import type { IDogRepository } from "../../../domain/repositories/dog.repository.interface";
 import { Dog } from "../../../domain/entities/dog.entity";
 import { DogMapper } from "../mappers/dog.mapper";
+import { TypeOrmDriver } from "src/core/base-infras/driver/typeorm.driver";
 @Injectable()
 export class DogRepository extends BaseRepository<Dog, DogEntity> implements IDogRepository {
     constructor (
@@ -15,13 +16,13 @@ export class DogRepository extends BaseRepository<Dog, DogEntity> implements IDo
         readonly mapper: DogMapper
     )
     {        
-        super(dogRepo, mapper);
+        super(new TypeOrmDriver(dogRepo), mapper);
     }
 
 
     async findByName(name: string): Promise<Dog | null>
     {
-        const ormDog = await this.repository.findOne({
+        const ormDog = await this.dogRepo.findOne({
             where: {name: name}
         });
         console.log("Đã truy cập vào database thành công");

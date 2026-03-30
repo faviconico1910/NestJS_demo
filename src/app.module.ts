@@ -10,10 +10,6 @@ import { CatModule } from './modules/cat/cat.module';
 import { RegisterModule } from './modules/register/register.module';
 import { UsersModule } from './modules/users/users.module';
 import { DogModule } from './modules/dog/dog.module';
-import { OrderModule } from './order/order.module';
-import { OrderModule } from './src/order/order.module';
-import { Module } from './order/src/modules/.module';
-import { OrderModuleTsModule } from './src/modules/order/order.module.ts/order.module.ts.module';
 import { OrderModule } from './modules/order/order.module';
 
 
@@ -42,8 +38,6 @@ import { OrderModule } from './modules/order/order.module';
       RegisterModule,
       DogModule,
       OrderModule,
-      Module,
-      OrderModuleTsModule
   ],
   controllers: [AppController],
   providers: [AppService]
