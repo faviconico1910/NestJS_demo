@@ -4,7 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
-
+import {ValidationPipe} from '@nestjs/common';
 
 
 async function bootstrap() {
@@ -23,6 +23,13 @@ async function bootstrap() {
   // Base exception filter dùng httpAdapter
   const httpAdapter = app.getHttpAdapter();
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      transform: true
+    })
+  );
 
   // use global guards
   // app.useGlobalGuards(new ApiKeyGuard)
