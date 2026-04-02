@@ -1,6 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, JoinTable, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 
-import {RoleEntity} from './role.orm-entity'
+import { RoleEntity } from './role.orm-entity';
 
 import { UserTokenEntity } from "./user_token.orm-entity";
 

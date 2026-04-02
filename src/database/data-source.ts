@@ -5,6 +5,7 @@ import {config} from 'dotenv'
 import {UserEntity} from '../modules/users/infras/db/orm-entities/user.orm-entity'
 import {RoleEntity} from '../modules/users/infras/db/orm-entities/role.orm-entity'
 import {UserTokenEntity} from '../modules/users/infras/db/orm-entities/user_token.orm-entity'
+import { CategoryEntity } from '../modules/categories/infras/db/orm-entities/category.orm-entity';
 
 config()
 
@@ -16,7 +17,7 @@ export default new DataSource({
   password: process.env.DB_PASSWORD || '123',
   database: process.env.DB_DATABASE || 'pet_shop',
   
-  entities: [UserEntity, RoleEntity, UserTokenEntity], 
+  entities: [UserEntity, RoleEntity, UserTokenEntity, CategoryEntity], 
   
   // nơi chứa migrations
   migrations: ['src/database/migrations/*.ts'], 

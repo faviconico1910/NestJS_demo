@@ -7,6 +7,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { OrderModule } from './modules/order/order.module';
 import { RegisterModule } from './modules/register/register.module';
 import { UsersModule } from './modules/users/users.module';
+import { PetsModule } from './modules/pets/pets.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 
 @Module({
@@ -33,6 +35,8 @@ import { UsersModule } from './modules/users/users.module';
     }),
       RegisterModule,
       OrderModule,
+      PetsModule,
+      CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService]
