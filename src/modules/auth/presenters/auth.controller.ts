@@ -2,8 +2,9 @@ import { Controller, Body, Post, HttpCode, HttpStatus, UseGuards, Get, Request, 
 import { AuthService } from '../application/auth.service';
 import { Public } from 'src/common/decorators/public/public.decorator';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { UserDto } from '../../users/presenters/dto/user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dtos/login.dto';
+import { LogoutDto } from './dtos/logout.dto';
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService, private jwtService: JwtService) {}
@@ -11,8 +12,8 @@ export class AuthController {
     
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signIn(@Body() userDto : UserDto) {
-        return this.authService.signIn(userDto.username, userDto.password);
+    signIn(@Body() loginDto : LoginDto) {
+        return this.authService.signIn(loginDto.username, loginDto.password);
     }
 
     // refresh endpoint
@@ -23,8 +24,9 @@ export class AuthController {
 
     @UseGuards(AuthGuard) 
     @Post('logout')
-    async logout(@Body() userId: number) {
-        return this.authService.logout(userId);
+    async logout(@Body() logoutDto: LogoutDto) {
+        await this.authService.logout(logoutDto.userId, logoutDto.refreshToken);
+        return { message: 'Đăng xuất thành công' };
     }
     
     @Get('confirm')

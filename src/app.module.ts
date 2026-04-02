@@ -1,20 +1,16 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { logger } from './common/middleware/logger/logger.middleware';
 import { AuthModule } from './modules/auth/auth.module';
-import { CatController } from './modules/cat/presenters/cat.controller';
-import { CatModule } from './modules/cat/cat.module';
+import { OrderModule } from './modules/order/order.module';
 import { RegisterModule } from './modules/register/register.module';
 import { UsersModule } from './modules/users/users.module';
-import { DogModule } from './modules/dog/dog.module';
-import { OrderModule } from './modules/order/order.module';
 
 
 @Module({
-  imports: [CatModule, AuthModule, UsersModule, 
+  imports: [ AuthModule, UsersModule, 
     ConfigModule.forRoot({
       isGlobal: true, // Cho phép sử dụng ConfigService ở bất kỳ đâu trong ứng dụng mà không cần import ConfigModule
     }),
@@ -36,12 +32,12 @@ import { OrderModule } from './modules/order/order.module';
       })
     }),
       RegisterModule,
-      DogModule,
       OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService]
 })
+export class AppModule {}
 
 // // apply middleware
 // export class AppModule {
@@ -54,10 +50,10 @@ import { OrderModule } from './modules/order/order.module';
 
 
 // apply functional middleware
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(logger)
-      .forRoutes(CatController);
-  } 
-}
+// export class AppModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(logger)
+//       .forRoutes(CatController);
+//   } 
+// }

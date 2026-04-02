@@ -1,11 +1,8 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Inject, Injectable } from '@nestjs/common';
 // import { Role } from '../../common/enums/role.enum'
-import { UserEntity } from '../infras/db/orm-entities/user.orm-entity';
-import * as bcrypt from 'bcrypt';
+import { User } from '../domain/entities/user.entity';
 import type { IUserRepository } from '../domain/repositories/user.repo.interface';
 import { USER_REPOSITORY } from '../domain/repositories/user.repo.interface';
-import { User } from '../domain/entities/user.entity';
 @Injectable()
 export class UsersService {
     constructor(
@@ -29,16 +26,11 @@ export class UsersService {
             data.password,
             data.email,
             null,
-            null,
             [],
             undefined,
             undefined
         );
-            return await this.userRepo.save(newUser);
+        return await this.userRepo.save(newUser);
     }
-    // hàm lưu refresh token
-    async updateRefreshToken(userId: number, hashedRefreshToken: string | null): Promise<void> 
-    {
-        await this.userRepo.update(userId, { refreshToken: hashedRefreshToken });
-    }
+
 }

@@ -2,12 +2,8 @@ import { seeder } from 'nestjs-seeder';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { InitSeeder } from '../modules/users/infras/db/seeders/init.seeder';
-import { CatSeeder } from '../modules/cat/infras/db/seeders/cats.seeder';
 import { UserEntity } from '../modules/users/infras/db/orm-entities/user.orm-entity'
 import { RoleEntity } from '../modules/users/infras/db/orm-entities/role.orm-entity'
-import { CatEntity } from '../modules/cat/infras/db/orm-entities/cat.orm-entity';
-import { DogEntity } from '../modules/dog/infras/db/orm-entitites/dog.orm-entity';
-import { DogSeeder } from '../modules/dog/infras/db/seeders/dogs.seeder';
 
 seeder({
   imports: [
@@ -25,6 +21,6 @@ seeder({
         synchronize: false,
       }),
     }),
-    TypeOrmModule.forFeature([RoleEntity, UserEntity, CatEntity, DogEntity]),
+    TypeOrmModule.forFeature([RoleEntity, UserEntity]),
   ],
-}).run([InitSeeder, CatSeeder, DogSeeder]);
+}).run([InitSeeder]);

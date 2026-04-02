@@ -34,7 +34,7 @@ export class RegisterService {
         }
 
         // dùng rest để dấu mật khẩu khi trả về
-        const { password: _, ...user } = newUser;
+        const { password_hash: _, ...user } = newUser;
         return {    
             message: 'Đăng ký thành công',
             username: user.username,

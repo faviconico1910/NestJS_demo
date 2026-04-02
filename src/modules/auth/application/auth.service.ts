@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import * as bcrypt from 'bcrypt'
 import { UsersService } from '../../users/application/users.service'
 import * as crypto from 'crypto';
+import { UserTokenService } from 'src/modules/users/application/user_token.service'
 
 export interface Tokens { 
     access_token: string;
@@ -14,7 +15,8 @@ export class AuthService {
     constructor(
         private usersService: UsersService,
         private jwtService: JwtService,
-        private configService: ConfigService
+        private configService: ConfigService,
+        private userTokenService: UserTokenService
     ) {}
 
         // tạo token
@@ -39,58 +41,59 @@ export class AuthService {
             if (!user) {
                 throw new UnauthorizedException('Tài khoản không tồn tại');
             }
-            if (!await bcrypt.compare(pass, user.password)) {
+            if (!await bcrypt.compare(pass, user.password_hash)) {
                 throw new UnauthorizedException('Mật khẩu không đúng');
             }
-            
+    
             // lấy danh sách roles
             const roles = user.roles.map(role => role.name);
 
             const tokens = await this.getTokens(user.id, user.username, roles);
 
-            await this.updateRefreshToken(user.id, tokens.refresh_token);
+            await this.saveNewRefreshToken(user.id, tokens.refresh_token, "");
             return tokens;
         }
 
-        // hàm logout
-        async logout(userId: number) {
-            console.log("Đang đăng xuất...")
-            return this.usersService.updateRefreshToken(userId, null);
+        async saveNewRefreshToken(userId: number, refreshToken: string, deviceInfo: string): Promise<void> {
+            const sha256Token = crypto.createHash('sha256').update(refreshToken).digest('hex');
+            const ExpireAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 1 ngày
+            deviceInfo = 'MockDevice/Windows Chrome 123.0';
+            await this.userTokenService.createToken(userId, sha256Token, deviceInfo, ExpireAt);
         }
 
-        async updateRefreshToken(userId: number, refreshToken: string | null): Promise<void> {
+        // // hàm logout
+        async logout(userId: number, refreshToken: string) {
+            console.log("Đang đăng xuất...")
+            const hashedToken = crypto.createHash('sha256').update(refreshToken).digest('hex');
+            await this.userTokenService.revokeToken(userId, hashedToken);
+        }
 
-            if (refreshToken) {
-                const sha256token = crypto.createHash('sha256').update(refreshToken).digest('hex');
-                const salt = await bcrypt.genSalt();
-                const hashedRefreshToken = await bcrypt.hash(sha256token, salt);
-                await this.usersService.updateRefreshToken(userId, hashedRefreshToken);
-            } else {
-                await this.usersService.updateRefreshToken(userId, null);
+        // logic xử lí khi access token hết hạn, dùng refresh token để lấy access token mới
+        async refreshTokens(userId: number, oldRefreshToken: string): Promise<Tokens> {
+
+            if (await this.usersService.findOneWithRelations(userId) == null) {
+                throw new BadRequestException('User không tồn tại');
             }
 
-        }
+            const sha256Token = crypto.createHash('sha256').update(oldRefreshToken).digest('hex');
+            const tokenRecord = await this.userTokenService.findByToken(userId, sha256Token);
+            if (!tokenRecord || tokenRecord.isRevoked || tokenRecord.expireAt < new Date()) {
+                throw new ForbiddenException('Refresh Token không hợp lệ hoặc đã hết hạn');
+            }
 
-        async refreshTokens(userId: number, refreshToken: string): Promise<Tokens> {
+            await this.userTokenService.revokeToken(userId, sha256Token);
+
             const user = await this.usersService.findOneWithRelations(userId);
             if (!user) {
-                throw new UnauthorizedException('Tài khoản không tồn tại');
+                throw new BadRequestException('User không tồn tại');
             }
-            if (user.refreshToken === null) {
-                throw new ForbiddenException('Refresh Token của user không tồn tại');
-            }
-            const sha256Token = crypto.createHash('sha256').update(refreshToken).digest('hex');
-            if (!await bcrypt.compare(sha256Token, user.refreshToken)){
-                throw new ForbiddenException('Refresh Token không khớp!');
-            }
-
+            // lấy danh sách roles
             const roles = user.roles.map(role => role.name);
 
-            const tokens = await this.getTokens(user.id, user.username, roles);
+            const newPairToken = await this.getTokens(user.id, user.username, roles);
 
-            await this.updateRefreshToken(user.id, tokens.refresh_token);
-
-            console.log(tokens);
-            return tokens;
+            await this.saveNewRefreshToken(user.id, newPairToken.refresh_token, "");
+            
+            return newPairToken;
         }
     }

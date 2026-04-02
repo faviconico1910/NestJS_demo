@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, CreateDateColumn, JoinTable, OneToMany } from "typeorm";
 
 import {RoleEntity} from './role.orm-entity'
+
+import { UserTokenEntity } from "./user_token.orm-entity";
 
 import { BaseOrmEntity } from "src/core/base-infras/base.orm-entity";
 
@@ -18,11 +20,9 @@ export class UserEntity extends BaseOrmEntity {
   @Column({ type: 'varchar', length: 15, nullable: true })
   phone: string | null;
 
-  @Column({name: 'refresh_token', type:'varchar', length: 255, nullable: true})
-  refreshToken: string | null;
 
 
-  // Join bảng
+  // Join bảng user_roles
   @ManyToMany(() => RoleEntity)
   @JoinTable({
     name: 'user_roles', // bảng trung gian
@@ -36,4 +36,7 @@ export class UserEntity extends BaseOrmEntity {
     },
   })
   roles: RoleEntity[]; 
+
+  @OneToMany(() => UserTokenEntity, token => token.user)
+  tokens: UserTokenEntity[];
 }

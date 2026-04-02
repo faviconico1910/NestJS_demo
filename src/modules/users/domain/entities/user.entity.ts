@@ -3,7 +3,7 @@ import {Role} from './role.entity'
 
 export class User extends BaseEntity<number> {
     username: string;
-    password: string;
+    password_hash: string;
     email: string | null;
     phone: string | null;
     refreshToken: string | null;
@@ -12,20 +12,18 @@ export class User extends BaseEntity<number> {
     constructor (
         id: number, 
         username: string,
-        password: string,
+        password_hash: string,
         email: string | null,
         phone: string | null,
-        refreshToken: string | null,
         roles: Role[],
         createdAt?: Date, 
         updatedAt?: Date
     ) {
             super(id, createdAt, updatedAt);
             this.username = username;
-            this.password = password;
+            this.password_hash = password_hash;
             this.email = email;
             this.phone = phone;
-            this.refreshToken = refreshToken;
             this.roles = roles;     
     }
 }
