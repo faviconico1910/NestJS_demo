@@ -85,8 +85,5 @@ export class InitSeeder implements Seeder {
   }
 
   async drop(): Promise<any> {
-    console.log('Dropping seeded data...');
-    await this.userRepo.delete({});
-    await this.roleRepo.delete({});
   }
 }

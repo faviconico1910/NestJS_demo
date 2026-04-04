@@ -9,16 +9,16 @@ import { BaseOrmEntity } from "src/core/base-infras/base.orm-entity";
 @Entity('users')
 export class UserEntity extends BaseOrmEntity {
   @Column({ length: 50, unique: true })
-  username: string;
+  username!: string;
 
   @Column({ length: 255 })
-  password: string;
+  password!: string;
 
   @Column({ type: 'varchar', length: 100, unique: true, nullable: true })
-  email: string | null;
+  email!: string | null;
 
   @Column({ type: 'varchar', length: 15, nullable: true })
-  phone: string | null;
+  phone!: string | null;
 
 
 
@@ -35,8 +35,8 @@ export class UserEntity extends BaseOrmEntity {
       referencedColumnName: 'id' 
     },
   })
-  roles: RoleEntity[]; 
+  roles!: RoleEntity[]; 
 
   @OneToMany(() => UserTokenEntity, token => token.user)
-  tokens: UserTokenEntity[];
+  tokens!: UserTokenEntity[];
 }

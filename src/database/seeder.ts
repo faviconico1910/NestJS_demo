@@ -7,6 +7,8 @@ import { RoleEntity } from '../modules/users/infras/db/orm-entities/role.orm-ent
 import { CategoryEntity } from '../modules/categories/infras/db/orm-entities/category.orm-entity';
 import { UserTokenEntity } from 'src/modules/users/infras/db/orm-entities/user_token.orm-entity';
 import { CategorySeeder } from 'src/modules/categories/infras/db/seeders/category.seeder';
+import { PetEntity } from 'src/modules/pets/infras/db/orm-entities/pet.orm-entity';
+import { PetSeeder } from 'src/modules/pets/infras/db/seeders/pet.seeder';
 seeder({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -23,6 +25,6 @@ seeder({
         synchronize: false,
       }),
     }),
-    TypeOrmModule.forFeature([RoleEntity, UserEntity, UserTokenEntity, CategoryEntity ]),
+    TypeOrmModule.forFeature([RoleEntity, UserEntity, UserTokenEntity, CategoryEntity, PetEntity ]),
   ],
-}).run([InitSeeder, CategorySeeder]);
+}).run([InitSeeder, CategorySeeder, PetSeeder]);

@@ -6,7 +6,7 @@ import {UserEntity} from '../modules/users/infras/db/orm-entities/user.orm-entit
 import {RoleEntity} from '../modules/users/infras/db/orm-entities/role.orm-entity'
 import {UserTokenEntity} from '../modules/users/infras/db/orm-entities/user_token.orm-entity'
 import { CategoryEntity } from '../modules/categories/infras/db/orm-entities/category.orm-entity';
-
+import { PetEntity } from '../modules/pets/infras/db/orm-entities/pet.orm-entity';
 config()
 
 export default new DataSource({
@@ -17,7 +17,7 @@ export default new DataSource({
   password: process.env.DB_PASSWORD || '123',
   database: process.env.DB_DATABASE || 'pet_shop',
   
-  entities: [UserEntity, RoleEntity, UserTokenEntity, CategoryEntity], 
+  entities: [UserEntity, RoleEntity, UserTokenEntity, CategoryEntity, PetEntity], 
   
   // nơi chứa migrations
   migrations: ['src/database/migrations/*.ts'], 

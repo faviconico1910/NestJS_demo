@@ -6,7 +6,7 @@ export class User extends BaseEntity<number> {
     password_hash: string;
     email: string | null;
     phone: string | null;
-    refreshToken: string | null;
+    refreshToken!: string | null;
     roles: Role[];
 
     constructor (
