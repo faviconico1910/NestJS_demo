@@ -5,6 +5,8 @@ import type { ICategoryRepository } from 'src/modules/categories/domain/reposito
 import { CATEGORY_REPOSITORY } from 'src/modules/categories/domain/repositories/category.repo.interface';
 import { Pet } from '../domain/entities/pet.entity';
 import { PetStatus } from '../domain/enums/pet_status.enum';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 @Injectable()
 export class PetService {
     constructor(
@@ -12,12 +14,34 @@ export class PetService {
         private  readonly petRepo: IPetRepository,
 
         @Inject(CATEGORY_REPOSITORY)
-        private readonly categoryRepo: ICategoryRepository
+        private readonly categoryRepo: ICategoryRepository,
+
+        @Inject(CACHE_MANAGER)
+        private readonly cacheManager: Cache
     ) {}
 
 
     async findById(id: number) {
-        return await this.petRepo.findById(id);
+        // định nghĩa key cho cache
+        const cacheKey = `pet:detail:${id}`;
+
+        // kiểm tra cache trước
+        const cachedPet = await this.cacheManager.get(cacheKey);
+        if (cachedPet) {
+            console.log(`Lấy Pet ID=${id} từ Redis siêu nhanh!`);
+            return cachedPet;
+        }
+
+        // nếu không có trong cache thì truy vấn database
+        const pet = await this.petRepo.findById(id);
+
+        // sau khi lấy được pet từ database, lưu vào cache với TTL 5 phút
+        if (pet) {
+            await this.cacheManager.set(cacheKey, pet)
+            console.log("Đã truy cập database chứ k phải redis cache")
+            console.log(`Lấy Pet ID=${id} từ database và lưu vào Redis!`);
+            return pet;
+        }
     }
 
     // tạo pet mới
@@ -47,6 +71,8 @@ export class PetService {
         )
         // save xuống database
         await this.petRepo.save(newPet);
+
+
         return newPet;
     }
 }

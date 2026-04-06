@@ -9,10 +9,11 @@ import { RegisterModule } from './modules/register/register.module';
 import { UsersModule } from './modules/users/users.module';
 import { PetsModule } from './modules/pets/pets.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { RedisCacheModule } from './common/cache/redis-cache.module';
 
 
 @Module({
-  imports: [ AuthModule, UsersModule, 
+  imports: [ AuthModule, UsersModule, RedisCacheModule, 
     ConfigModule.forRoot({
       isGlobal: true, // Cho phép sử dụng ConfigService ở bất kỳ đâu trong ứng dụng mà không cần import ConfigModule
     }),

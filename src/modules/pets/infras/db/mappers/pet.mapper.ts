@@ -30,8 +30,6 @@ export class PetMapper extends BaseMapper<Pet, PetEntity> {
         ormEntity.price = domainEntity.price;
         ormEntity.status = domainEntity.status;
         ormEntity.description = domainEntity.description;
-    
-
         return ormEntity;
     }
 }
